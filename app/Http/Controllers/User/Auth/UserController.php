@@ -39,12 +39,12 @@ class UserController extends Controller
     public function userLogin(userLoginFormRequest $request)
     {
         try {
-            if ($some = Auth::guard('api')->attempt($request->only('email', 'password'))) {
-                return $this->respondWithToken($some);
-                // return redirect()->route('user.Dashboard')->with('success', 'Login Successfull');
+            if ($some = Auth::guard('user')->attempt($request->only('email', 'password'))) {
+                // return $this->respondWithToken($some);
+                return redirect()->route('user.Dashboard')->with('success', 'Login Successfull');
             } else {
-                // return redirect()->back()->with('error', 'Please Check Credentials');
-                return response()->json(['error' => 'Please Check Credentials'], 401);
+                return redirect()->back()->with('error', 'Please Check Credentials');
+                // return response()->jsoPn(['error' => 'Please Check Credentials'], 401);
             }
             // return $this->respondWithToken($some);
         } catch (\Exception $exception) {
