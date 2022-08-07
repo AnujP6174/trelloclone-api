@@ -40,13 +40,10 @@ class UserController extends Controller
     {
         try {
             if ($some = Auth::guard('user')->attempt($request->only('email', 'password'))) {
-                // return $this->respondWithToken($some);
-                return redirect()->route('user.Dashboard')->with('success', 'Login Successfull');
+                return redirect()->route('user.Dashboard')->with('success', 'Login Successful');
             } else {
                 return redirect()->back()->with('error', 'Please Check Credentials');
-                // return response()->jsoPn(['error' => 'Please Check Credentials'], 401);
             }
-            // return $this->respondWithToken($some);
         } catch (\Exception $exception) {
             dd($exception);
             return redirect()->back()->with('error', 'Temporary Server error');
@@ -97,7 +94,6 @@ class UserController extends Controller
             ]);
             return response()->json(['success' => 'OTP has been sent on entered email address']);
         } catch (\Exception $exception) {
-            // dd($exception);
             return response()->json(['error' => 'Something Went Wrong'], 401);
         }
     }
@@ -197,9 +193,8 @@ class UserController extends Controller
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
             ]);
-            return response()->json(['success' => 'User Registration Successfull'], 200);
-            // Auth::guard('user')->login($user);
-            // return redirect()->route('user.Dashboard')->with('success', 'SignUp Successfull');
+            Auth::guard('user')->login($user);
+            return redirect()->route('user.Dashboard')->with('success', 'SignUp Successfull');
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', 'Temporary Server Error.');
         }
